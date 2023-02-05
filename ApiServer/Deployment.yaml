@@ -35,9 +35,9 @@ spec:
         - name: dynamodb_region
           value: us-west-2
         - name: AWS_ACCESS_KEY_ID
-          value: AKIA5HGJXBP7ELCZWUB7
+          value: <>
         - name: AWS_SECRET_ACCESS_KEY
-          value: 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
+          value: <>
         - name: SOLR_ENDPOINT
           value: http://solr:8983
         imagePullPolicy: Always
