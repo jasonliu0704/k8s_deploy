@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: api-server
+  name: api-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: api-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: api-server
+    spec:
+      serviceAccountName: pod-reader-sa
+      containers:
+      - image: campusplace/message:apiserver
+        name: api-server
+        env:
+        - name: mode
+          value: dev
+        # need to match threadservice grpc service host service name
+        - name: thread_service_grpc_agent_host
+          value: kubernetes:///threadservice-headless:10000
+        - name: ZK_ENDPOINT
+          value: zookeeper
+        - name: GRPC_GO_LOG_VERBOSITY_LEVEL
+          value: "99"
+        - name: GRPC_GO_LOG_SEVERITY_LEVEL
+          value: info
+        - name: GIN_MODE
+          value: release
+        - name: dynamodb_region
+          value: us-west-2
+        - name: AWS_ACCESS_KEY_ID
+          value: AKIA5HGJXBP7ELCZWUB7
+        - name: AWS_SECRET_ACCESS_KEY
+          value: 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
+        - name: SOLR_ENDPOINT
+          value: http://solr:8983
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8088
+      imagePullSecrets:
+        - name: regcred
